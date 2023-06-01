@@ -1,0 +1,83 @@
+<template>
+  <div class="doc-preview">
+    <div class="component">
+      <slot></slot>
+    </div>
+    <div class="toolbar">
+      <div class="item" @click="copyCode">
+        <svg
+          fill="none"
+          height="20"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9 2 2 4-4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+      <div class="item" @click="toggleCode">
+        <svg height="20" viewBox="0 0 512 512"
+             width="20" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M160 368L32 256l128-112M352 368l128-112-128-112M304 96l-96 320"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="46"
+          />
+        </svg>
+      </div>
+    </div>
+    <div v-show="visible" class="code">
+      <!--      <slot name="code"/>-->
+      <pre class="language-xml" v-html="highlightedCode"></pre>
+    </div>
+  </div>
+</template>
+<script lang="ts" setup>
+import Prism from 'prismjs'
+import "prismjs/themes/prism-okaidia.css"
+import {ref, useSlots, computed} from 'vue'
+
+const slots = useSlots()
+const visible = ref(false)
+
+const slotsCode = computed(() => {
+  return decodeURIComponent(slots.code()[0].children)
+})
+
+const highlightedCode = computed(() => {
+  return Prism.highlight(slotsCode.value, Prism.languages.xml, 'xml');
+})
+const copyCode = () => {
+  try {
+    navigator.clipboard.writeText(slotsCode.value)
+  } catch (err) {
+    console.log(err)
+  }
+}
+const toggleCode = () => {
+  visible.value = !visible.value
+}
+</script>
+
+<style lang="scss" scoped>
+.doc-preview {border: 1px solid #eee;
+  .component {padding: 10px;}
+  .toolbar {align-items: center;border-top: 1px solid #eee;color: #333;display: flex;justify-content: flex-end;padding: 5px 10px;
+    .item {cursor: pointer;margin-left: 5px;
+      &:hover {opacity: .6}
+    }
+  }
+  .code {border-top: 1px solid #eee;padding: 0;
+    pre {margin: 0;border-radius: 0}
+  }
+}
+</style>
