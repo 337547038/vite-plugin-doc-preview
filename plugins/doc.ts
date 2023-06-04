@@ -18,6 +18,7 @@ const vueDoc = () => {
       }
     },
     load(id: string) {
+
       if (DEMO_BLOCK_REGEXP.test(id)) {
         // id格式为 xxxx.md.DemoBlockxx.vue
         const idSplit: number = id.lastIndexOf('.vue')
@@ -45,6 +46,11 @@ import ${name} from "${id}.${name}.vue"
 </script>
 `
         })
+      }
+    },
+    transform(code,id){
+      if(id.endsWith('.md')){
+        console.log(code)
       }
     }
   }
