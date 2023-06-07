@@ -1,8 +1,11 @@
 //https://marked.js.org/
 import {marked} from 'marked'
 import {createHash} from 'node:crypto'
+import fs from 'node:fs'
+import Prism from 'prismjs'
 import {markedHighlight} from "marked-highlight";
 import hljs from 'highlight.js';
+//import "prismjs/themes/prism-okaidia.css"
 
 const DEMO_BLOCK_REGEXP = /PreviewComponent[a-zA-Z0-9]{10}\.vue$/
 
@@ -25,51 +28,38 @@ export default function () {
         const name: string = id.replace('./', '').replace('.vue', '')
         return previewComponentObj[name]
       }
-    },
-    transform(code, id) {
       if (id.endsWith('.md')) {
-        console.log('transform', id)
-        const renderer = new marked.Renderer()
+        let styleHtml: string = ''
+        let scriptHtml: string = ''
         const options: any = {
           gfm: true,
-          tables: true,
-          breaks: false,
-          pedantic: false,
-          sanitize: false,
-          smartLists: true,
-          smartypants: false,
           langPrefix: 'language-',
-          renderer,
-          /*highlight:function (code){
-            return hljs.highlightAuto(code).value
-          }*/
-          /*highlight: (code, lang) => {
-
-            /!*if (lang && hljs.getLanguage(lang)) {
-              try {
-                return hljs.highlight(lang, code, true).value
-              } catch (__) { }
-            }*!/
-          }*/
+          mangle: false,
+          headerIds: false
         }
-
-        const tokens = marked.lexer(code, options);
-        const newCode = marked.parser(tokens)
+        const code = fs.readFileSync(id, 'utf8')
         marked.use(markedHighlight({
           langPrefix: 'language-',
-          highlight(code, lang) {
-            const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-            //return hljs.highlight(code, {language}).value;
-            return '5555'
+          highlight: (code, lang) => {
+            console.log(lang)
+            /*try {
+              return Prism.highlight(code, Prism.languages[lang], lang)
+            } catch (e) {
+              return Prism.highlight(code, Prism.languages.xml, 'xml')
+            }*/
           }
-        }),options);
-
-
-        //const tokens = marked.lexer(code, options)
-        //const newCode = marked.parser(tokens)
-
-        return `<template>${newCode}</template>`
+        }))
+        //console.log(code)
+        const newCode = marked.parse(code, options)
+        return `<template><div class="marked-body">${newCode}</div></template>
+                ${scriptHtml}
+                ${styleHtml}`
       }
+    },
+    transform(code, id) {
+
+    },
+    handleHotUpdate(ctx){
     },
     transform0001(code, id) {
       // if (id.endsWith('.md')) {
@@ -86,6 +76,7 @@ export default function () {
       //     // 显示预览的代码和组件
       //     if (type === 'code' && lang === 'vue preview') {
       //       const componentName: string = `PreviewComponent${getHash(text)}`
+      //    //marked.parser(text)
       //       const newItem = {
       //         type: 'html',
       //         text: `<code-preview code="${encodeURIComponent(text)}">

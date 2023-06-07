@@ -7,6 +7,7 @@ import vue from '@vitejs/plugin-vue'
 //import vitePluginDoc from "./plugins/doc"
 import vitePluginDoc from './plugins/markedDoc'
 
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
