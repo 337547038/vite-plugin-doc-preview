@@ -38,7 +38,7 @@ export default defineConfig({
       themes:'github-dark',　//　高亮主题，默认github-dark。其他主题可查看node_modules/highlight.js/styles
       component:false // 是否自定义预览组件，默认false
       previewId:'vue preview' // 预览标识，默认vue preview
-    })*/
+    })*/      
   ]
 })
 ```
@@ -90,8 +90,8 @@ app.component('CodePreview', CodePreview)　//　注册自己的自定义好的�
 `CodePreview` 需要按约定支持如下 `props` 和 `slot`
 
 - props
-  - `code` string 代码块的原始代码
+    - `code` string 代码块的原始代码
 - slot
-  - `default` 代码块生成的 vue 组件
-  - `code` 代码块经过高亮转换的 html ，代码已经`encodeURIComponent`处理
+    - `default` 代码块生成的 vue 组件
+    - `code` 代码块经过高亮转换的 html ，代码已经`encodeURIComponent`处理
 

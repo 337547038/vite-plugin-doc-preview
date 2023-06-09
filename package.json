@@ -1,29 +1,29 @@
 {
   "name": "vite-plugin-doc-preview",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "publish": "pnpm --filter ./packages tsup",
+    "publishVite": "pnpm --filter ./packages build"
   },
   "dependencies": {
     "vue": "^3.2.47",
     "vue-router": "^4.2.2"
   },
   "devDependencies": {
-    "@types/marked": "^5.0.0",
+    "@types/node": "^20.2.5",
     "@vitejs/plugin-vue": "^4.1.0",
     "highlight.js": "^11.8.0",
     "marked": "^5.0.4",
-    "marked-highlight": "^2.0.1",
-    "prismjs": "^1.29.0",
     "sass": "^1.62.1",
+    "tsup": "^6.7.0",
     "typescript": "^5.0.2",
     "vite": "^4.3.2",
-    "vite-plugin-md": "^0.21.5",
-    "vite-plugin-vue-markdown": "^0.23.5",
+    "vite-plugin-optimizer": "^1.4.2",
     "vue-tsc": "^1.4.2"
   }
 }

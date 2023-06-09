@@ -1,1 +1,0 @@
-import{_ as t,r as c,c as s,a,w as e,o as n,b as r,d}from"./index-d45de852.js";const _={},l=d("div",null,"1111",-1);function i(f,u){const o=c("CodePreview");return n(),s("div",null,[a(o,null,{code:e(()=>[r("121212")]),default:e(()=>[l]),_:1})])}const p=t(_,[["render",i]]);export{p as default};

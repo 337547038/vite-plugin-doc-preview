@@ -36,36 +36,24 @@
       </div>
     </div>
     <div v-show="visible" class="code">
-      <pre class="language-xml" v-html="highlightedCode"></pre>
+      <slot name="code"></slot>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-//import Prism from 'prismjs'
-//import "prismjs/themes/prism-okaidia.css"
-import {ref, computed} from 'vue'
+import {ref} from 'vue'
 
 const props = withDefaults(
   defineProps<{
     code: string
   }>(),
-  {
-  }
+  {}
 )
 
 const visible = ref(false)
-
-const slotsCode = computed(() => {
-  return decodeURIComponent(props.code)
-})
-
-const highlightedCode = computed(() => {
-  return slotsCode.value
-  //return Prism.highlight(decodeURIComponent(props.code), Prism.languages.xml, 'xml');
-})
 const copyCode = () => {
   try {
-    navigator.clipboard.writeText(slotsCode.value)
+    navigator.clipboard.writeText(decodeURIComponent(props.code))
   } catch (err) {
     console.log(err)
   }
@@ -73,6 +61,7 @@ const copyCode = () => {
 const toggleCode = () => {
   visible.value = !visible.value
 }
+
 </script>
 
 <style lang="scss" scoped>
@@ -84,7 +73,7 @@ const toggleCode = () => {
     }
   }
   .code {border-top: 1px solid #eee;padding: 0;
-    pre {margin: 0;border-radius: 0}
+    pre {border-radius: 0;margin: 0;}
   }
 }
 </style>
