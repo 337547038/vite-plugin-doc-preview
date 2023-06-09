@@ -1,6 +1,6 @@
 # vite-plugin-doc-preview
 
-基于 `vite`、`marked` 的 markdown 代码块预览插件。
+基于 `vue3`、`vite`、`marked` 的 markdown 代码块预览插件。
 
 `vite-plugin-doc-preview` 能将 markdown 文档中带有如 `preview` 指定标识的 vue 代码块替换为 vue 组件，同时支持高亮代码。
 
@@ -38,14 +38,14 @@ export default defineConfig({
       themes:'github-dark',　//　高亮主题，默认github-dark。其他主题可查看node_modules/highlight.js/styles
       component:false // 是否自定义预览组件，默认false
       previewId:'vue preview' // 预览标识，默认vue preview
-    })*/      
+    })*/
   ]
 })
 ```
 
 ## 代码预览标识
 
-给需要预览的 vue 代码块加上指定标识，如 `preview` 。
+给需要预览的 vue 代码块加上指定标识，如 `preview` 。其他标识可在`vite.config.ts`配置中修改
 
 如 `test.md` 文件内容为：
 
@@ -90,8 +90,8 @@ app.component('CodePreview', CodePreview)　//　注册自己的自定义好的�
 `CodePreview` 需要按约定支持如下 `props` 和 `slot`
 
 - props
-    - `code` string 代码块的原始代码
+  - `code` string 代码块的原始代码，代码已经`encodeURIComponent`处理
 - slot
-    - `default` 代码块生成的 vue 组件
-    - `code` 代码块经过高亮转换的 html ，代码已经`encodeURIComponent`处理
+  - `default` 代码块生成的 vue 组件
+  - `code` 代码块经过高亮转换的 html 
 
