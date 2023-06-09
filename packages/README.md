@@ -16,6 +16,8 @@ https://337547038.github.io/vite-plugin-doc-preview/
 npm install vite-plugin-doc-preview
 # or
 pnpm install vite-plugin-doc-preview
+# or
+yarn install vite-plugin-doc-preview
 ```
 
 ## 在 Vite 中使用
@@ -69,7 +71,7 @@ _下方代码块将会被解析为 vue 组件并展示_
     name: '/md',
     component: () => import('./views/README.md')
   }
- ]
+]
 ```
 
 ## 自定义预览组件

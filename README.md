@@ -16,6 +16,8 @@ https://337547038.github.io/vite-plugin-doc-preview/
 npm install vite-plugin-doc-preview
 # or
 pnpm install vite-plugin-doc-preview
+# or
+yarn install vite-plugin-doc-preview
 ```
 
 ## 在 Vite 中使用
