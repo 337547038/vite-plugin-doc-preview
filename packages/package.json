@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-doc-preview",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "",
   "license": "MIT",
   "author": "337547038",
@@ -41,9 +41,10 @@
     "tsup": "tsup"
   },
   "dependencies": {
-  },
-  "devDependencies": {
     "highlight.js": "^11.8.0",
     "marked": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.5"
   }
 }

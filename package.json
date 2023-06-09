@@ -17,13 +17,11 @@
   "devDependencies": {
     "@types/node": "^20.2.5",
     "@vitejs/plugin-vue": "^4.1.0",
-    "highlight.js": "^11.8.0",
-    "marked": "^5.0.4",
     "sass": "^1.62.1",
     "tsup": "^6.7.0",
     "typescript": "^5.0.2",
     "vite": "^4.3.2",
-    "vite-plugin-doc-preview": "^0.1.0",
+    "vite-plugin-doc-preview": "^0.1.2",
     "vite-plugin-optimizer": "^1.4.2",
     "vue-tsc": "^1.4.2"
   }
