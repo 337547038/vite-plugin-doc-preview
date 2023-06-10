@@ -1,13 +1,13 @@
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
-//import DocPreview from './packages/dist'
-import DocPreview from 'vite-plugin-doc-preview'
+import DocPreview from './packages/src'
+//import DocPreview from 'vite-plugin-doc-preview'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue({include: [/\.vue$/, /\.md$/]}),
-    DocPreview()
+    DocPreview({})
   ],
   base: './',
   build: {

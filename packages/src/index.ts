@@ -11,16 +11,18 @@ function getHash(text: string): string {
   return 'VirtualComponent' + crypto.createHash('sha256').update(text).digest('hex').substring(0, 8)
 }
 
-const getHighlightCode = (text: string, lang: string, optThemes: string) => {
+const getHighlightCode = (text: string, lang: string) => {
   let newText
   try {
     newText = hljs.highlight(text, {language: lang}).value
   } catch (e) {
     newText = hljs.highlight(text, {language: 'xml'}).value
   }
-  return `<pre class="language-${lang} ${optThemes}"><code class="hljs">${newText}</code></pre>`
+  return `<pre class="language-${lang}"><code class="hljs">${newText}</code></pre>`
 }
 let previewComponentObj = {}
+
+let codePreviewPath: string = ''
 
 interface OptConfig {
   marked?: any // marked相关配置
@@ -31,11 +33,15 @@ interface OptConfig {
 
 export default function (opt: OptConfig) {
   const optMarked = opt?.marked || {}
-  const optThemes: string = opt?.themes || 'github-dark'
   const previewId: string = opt?.previewId || 'vue preview'
   return {
     name: 'vite:vueDocPreview',
     enforce: 'pre',
+    configResolved(cfg) {
+      // 用于开发测试
+      //console.log('cfg', cfg)
+      codePreviewPath = path.resolve(cfg.root, "./packages/component/codePreview.vue")
+    },
     resolveId(id) {
       if (DEMO_BLOCK_REGEXP.test(id)) {
         return id
@@ -78,7 +84,7 @@ export default function (opt: OptConfig) {
               type: 'html',
               text: `<code-preview code="${encodeURIComponent(text)}">
                        <${componentName}/>
-                       <template #code>${getHighlightCode(text, 'xml', optThemes)}</template>
+                       <template #code>${getHighlightCode(text, 'xml')}</template>
                      </code-preview>`
             }
             tokens.splice(index, 1, newItem)
@@ -104,22 +110,25 @@ export default function (opt: OptConfig) {
             // 代码高亮处理
             tokens.splice(index, 1, {
               type: 'html',
-              text: getHighlightCode(text, lang, optThemes)
+              text: getHighlightCode(text, lang)
             } as any)
           }
         })
         const newCode = marked.parser(tokens)
-        const componentScript: string[] = [
-          `import hljs from 'highlight.js'`,
-          `import "highlight.js/styles/${optThemes}.css"`
-        ]
+        const componentScript: string[] = []
         // 预览组件
         if (!opt?.component) {
-          // 自定组件时则不导入预设的预览组件
-          const pcText = fs.readFileSync(path.resolve(__dirname, '../component/codePreview.vue'), 'utf8')
-          const pcName: string = getHash(pcText)
-          previewComponentObj[pcName] = pcText
-          componentScript.push(`import CodePreview from "./${pcName}.vue"`)
+          // 自定组件时则不导入预设的预览组件，开发测试可用，从npm安装时路径codePreviewPath是不存在的
+          //　加入try方便开发调试
+          try {
+            const pcText: string = fs.readFileSync(codePreviewPath, 'utf8')
+            const pcName: string = getHash(pcText)
+            previewComponentObj[pcName] = pcText
+            componentScript.push(`import CodePreview from "./${pcName}.vue"`)
+          } catch (e) {
+            // 发npm后使用这路径
+            componentScript.push(`import CodePreview from "vite-plugin-doc-preview/component"`)
+          }
         }
         for (const key in previewComponentObj) {
           componentScript.push(`import ${key} from "./${key}.vue"`)
@@ -149,8 +158,6 @@ export default function (opt: OptConfig) {
                 ${scriptHtml}\n
                 ${styleHtml}`
       }
-    },
-    handleHotUpdate() {
     }
   }
 }

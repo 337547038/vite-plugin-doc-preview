@@ -34,15 +34,22 @@ export default defineConfig({
       include: [/\.vue$/, /\.md$/],
     }),
     MarkedPreview()
-    // 可根据需要设置参数
+    // 可根据需要设置参数，可选
     /*MarkedPreview({
       marked:{}, // marked转换options，可参考https://marked.js.org/
-      themes:'github-dark',　//　高亮主题，默认github-dark。其他主题可查看node_modules/highlight.js/styles
       component:false // 是否自定义预览组件，默认false
       previewId:'vue preview' // 预览标识，默认vue preview
     })*/
   ]
 })
+```
+
+## 引入样式
+
+在适当组件页面引入高亮样式，如 `main.ts`　中。其他主题风格可参考 `highlight.js` 引入对应主题
+
+```ts
+import "vite-plugin-doc-preview/style/style.css"
 ```
 
 ## 代码预览标识

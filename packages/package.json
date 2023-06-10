@@ -1,12 +1,19 @@
 {
   "name": "vite-plugin-doc-preview",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.1.0",
+  "description": "基于Vite + Vue3的markdown文档代码预览插件",
   "license": "MIT",
   "author": "337547038",
-  "keywords": ["marked","doc","preview","vue3"],
+  "keywords": [
+    "marked",
+    "doc",
+    "preview",
+    "vue3",
+    "vite",
+    "markdown"
+  ],
   "engines": {
-    "node": "^14.18.0 || >=16.0.0"
+    "node": ">=16.0.0"
   },
   "repository": {
     "type": "git",
@@ -23,7 +30,8 @@
   "homepage": "https://github.com/337547038/vite-plugin-doc-preview",
   "files": [
     "dist",
-    "component"
+    "component",
+    "style"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -34,7 +42,9 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./style/*": "./style/*",
+    "./component": "./component/index.js"
   },
   "scripts": {
     "build": "vite build",

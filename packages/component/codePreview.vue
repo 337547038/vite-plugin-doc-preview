@@ -64,16 +64,18 @@ const toggleCode = () => {
 
 </script>
 
-<style lang="scss" scoped>
-.doc-preview {border: 1px solid #eee;
-  .component {padding: 10px;}
-  .toolbar {align-items: center;border-top: 1px solid #eee;color: #333;display: flex;justify-content: flex-end;padding: 5px 10px;
-    .item {cursor: pointer;margin-left: 5px;
-      &:hover {opacity: .6}
-    }
-  }
-  .code {border-top: 1px solid #eee;padding: 0;
-    pre {border-radius: 0;margin: 0;}
-  }
-}
+<style scoped>
+.doc-preview {border: 1px solid #eee;}
+
+.doc-preview .component {padding: 10px;}
+
+.doc-preview .toolbar {align-items: center;border-top: 1px solid #eee;color: #333;display: flex;justify-content: flex-end;padding: 5px 10px;}
+
+.doc-preview .item {cursor: pointer;margin-left: 5px;}
+
+.doc-preview .item:hover {opacity: .6}
+
+.doc-preview .code {border-top: 1px solid #eee;padding: 0;}
+
+.doc-preview pre {border-radius: 0;margin: 0;}
 </style>
