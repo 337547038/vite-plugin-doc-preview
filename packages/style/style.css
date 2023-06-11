@@ -44,13 +44,14 @@
   padding: 10px 15px;
   background: #fff;
 }
-
+.marked-body pre{margin: 0}
 /*
 hightlight.css*/
 pre code.hljs {
   display: block;
   overflow-x: auto;
-  padding: 1em
+  padding: 1em;
+  line-height: 20px;
 }
 
 code.hljs {

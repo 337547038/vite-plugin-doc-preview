@@ -5,10 +5,11 @@ import path from 'path'
 import fs from 'fs'
 import hljs from 'highlight.js'
 
-const DEMO_BLOCK_REGEXP: RegExp = /VirtualComponent[a-zA-Z0-9]{8}\.vue$/
+const DEMO_BLOCK_REGEXP: RegExp = /Virtual[a-zA-Z0-9]{8}\.vue$/
+
 
 function getHash(text: string): string {
-  return 'VirtualComponent' + crypto.createHash('sha256').update(text).digest('hex').substring(0, 8)
+  return 'Virtual' + crypto.createHash('sha256').update(text).digest('hex').substring(0, 8)
 }
 
 const getHighlightCode = (text: string, lang: string) => {
@@ -18,11 +19,10 @@ const getHighlightCode = (text: string, lang: string) => {
   } catch (e) {
     newText = hljs.highlight(text, {language: 'xml'}).value
   }
+  // 模板中存在{{}}时也会被赋值不能显示代码，这里转换下
+  newText = newText.replace(/{{/g, '&#123;&#123;').replace(/}}/g, '&#125;&#125;')
   return `<pre class="language-${lang}"><code class="hljs">${newText}</code></pre>`
 }
-let previewComponentObj = {}
-
-let codePreviewPath: string = ''
 
 interface OptConfig {
   marked?: any // marked相关配置
@@ -34,12 +34,15 @@ interface OptConfig {
 export default function (opt: OptConfig) {
   const optMarked = opt?.marked || {}
   const previewId: string = opt?.previewId || 'vue preview'
+  let previewComponentObj = {}
+  let codePreviewPath: string = ''
   return {
     name: 'vite:vueDocPreview',
     enforce: 'pre',
     configResolved(cfg) {
       // 用于开发测试
-      //console.log('cfg', cfg)
+      //console.log('cfg', cfg.root)
+      //root = cfg.root
       codePreviewPath = path.resolve(cfg.root, "./packages/component/codePreview.vue")
     },
     resolveId(id) {
@@ -48,8 +51,17 @@ export default function (opt: OptConfig) {
       }
     },
     load(id: string) {
+      /*if (id.endsWith(".md")) {
+        // 每个md文件先清空上次的，要不会越积越多。这里清空打包时会有问题
+        previewComponentObj = {}
+      }*/
       if (DEMO_BLOCK_REGEXP.test(id)) {
-        const name: string = id.replace('./', '').replace('.vue', '')
+        const basename: string = path.basename(id, '.vue') ///xxxx.md.xxx形式。正则将xxxx.md.过滤
+        const name: string = basename.replace(/^.*?\.md\./g, '')
+        // 使用完后删除。暂不清楚哪个周期里可以清空这值
+        setTimeout(()=>{
+          delete previewComponentObj[name]
+        })
         return previewComponentObj[name]
       }
     },
@@ -73,7 +85,12 @@ export default function (opt: OptConfig) {
             return hljs.highlight(code, { language }).value;
           }
         }));*/
+
+        //return `<template>${marked.parse(code, options)}</template>`
+
+
         let newItem: any = {}
+        const previewObj = {}　//　多定义一个，
         const tokens = marked.lexer(code, options)
         tokens.forEach((item: any, index: number) => {
           const {type, lang, text, block} = item
@@ -82,13 +99,14 @@ export default function (opt: OptConfig) {
             const componentName: string = getHash(text)
             newItem = {
               type: 'html',
-              text: `<code-preview code="${encodeURIComponent(text)}">
+              text: `<code-preview code="">
                        <${componentName}/>
                        <template #code>${getHighlightCode(text, 'xml')}</template>
                      </code-preview>`
             }
             tokens.splice(index, 1, newItem)
             previewComponentObj[componentName] = text
+            previewObj[componentName] = text
           } else if (type === 'html' && block) {
             // 存在script或style时，替换为空，存在多个时取第一个，暂不作多个合并
             newItem = {type: 'space', text: '\n\n'}
@@ -130,8 +148,9 @@ export default function (opt: OptConfig) {
             componentScript.push(`import CodePreview from "vite-plugin-doc-preview/component"`)
           }
         }
-        for (const key in previewComponentObj) {
-          componentScript.push(`import ${key} from "./${key}.vue"`)
+        //　previewObj确定import进来都是当前页面的。previewComponentObj如不清空会是全部
+        for (const key in previewObj) {
+          componentScript.push(`import ${key} from "${id}.${key}.vue"`)
         }
         // 将需预览的转为虚拟组件并自定指令用于其他代码的高亮
         const scriptAppend: string = `${componentScript.join('\n')}\n`
@@ -158,6 +177,11 @@ export default function (opt: OptConfig) {
                 ${scriptHtml}\n
                 ${styleHtml}`
       }
+    }, buildEnd() {
+      console.log('buildEnd')
+    },
+    closeBundle() {
+      console.log('closeBundlecloseBundle')
     }
   }
 }

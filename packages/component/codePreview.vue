@@ -65,7 +65,7 @@ const toggleCode = () => {
 </script>
 
 <style scoped>
-.doc-preview {border: 1px solid #eee;}
+.doc-preview {border: 1px solid #eee; margin-bottom: 20px}
 
 .doc-preview .component {padding: 10px;}
 
