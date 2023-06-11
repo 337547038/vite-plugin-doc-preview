@@ -177,11 +177,9 @@ export default function (opt: OptConfig) {
                 ${scriptHtml}\n
                 ${styleHtml}`
       }
-    }, buildEnd() {
-      console.log('buildEnd')
     },
     closeBundle() {
-      console.log('closeBundlecloseBundle')
+      previewComponentObj={}
     }
   }
 }
