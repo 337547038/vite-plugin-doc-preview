@@ -1,6 +1,8 @@
 import { defineConfig } from 'tsup'
 import pkg from './package.json'
+import fs from 'fs'
 
+fs.createReadStream('../README.md').pipe(fs.createWriteStream('./README.md'))
 export default defineConfig(() => {
   return {
     entryPoints: ['src/index.ts'],
