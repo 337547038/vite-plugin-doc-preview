@@ -1,6 +1,6 @@
 /**
  * name: vite-plugin-doc-preview
- * version: 0.2.0
+ * version: 0.2.1
  */
 import{marked as R}from"marked";import O from"crypto";import E from"path";import k from"highlight.js";import H from"esbuild";var C=/Virtual[a-zA-Z0-9]{8}\.(vue|tsx)$/;function A(t){return"Virtual"+O.createHash("sha256").update(t).digest("hex").substring(0,8)}var w=(t,g,d)=>{let e;try{e=k.highlight(t,{language:g}).value}catch{e=k.highlight(t,{language:"xml"}).value}return e=I(e,d),d&&(e=e.replace(/\n/g,"<br/>")),`
 <pre class="language-${g}"><code class="hljs">${e}</code></pre>

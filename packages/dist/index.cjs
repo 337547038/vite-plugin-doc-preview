@@ -1,6 +1,6 @@
 /**
  * name: vite-plugin-doc-preview
- * version: 0.2.0
+ * version: 0.2.1
  */
 "use strict";var M=Object.create;var $=Object.defineProperty;var T=Object.getOwnPropertyDescriptor;var U=Object.getOwnPropertyNames;var V=Object.getPrototypeOf,_=Object.prototype.hasOwnProperty;var z=(e,n)=>{for(var r in n)$(e,r,{get:n[r],enumerable:!0})},P=(e,n,r,t)=>{if(n&&typeof n=="object"||typeof n=="function")for(let s of U(n))!_.call(e,s)&&s!==r&&$(e,s,{get:()=>n[s],enumerable:!(t=T(n,s))||t.enumerable});return e};var y=(e,n,r)=>(r=e!=null?M(V(e)):{},P(n||!e||!e.__esModule?$(r,"default",{value:e,enumerable:!0}):r,e)),G=e=>P($({},"__esModule",{value:!0}),e);var N={};z(N,{default:()=>L});module.exports=G(N);var R=require("marked"),j=y(require("crypto"),1),O=y(require("path"),1),k=y(require("highlight.js"),1),E=y(require("esbuild"),1),S=/Virtual[a-zA-Z0-9]{8}\.(vue|tsx)$/;function K(e){return"Virtual"+j.default.createHash("sha256").update(e).digest("hex").substring(0,8)}var b=(e,n,r)=>{let t;try{t=k.default.highlight(e,{language:n}).value}catch{t=k.default.highlight(e,{language:"xml"}).value}return t=H(t,r),r&&(t=t.replace(/\n/g,"<br/>")),`
 <pre class="language-${n}"><code class="hljs">${t}</code></pre>
