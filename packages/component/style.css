@@ -2,7 +2,8 @@
 
 .doc-preview .component {padding: 10px;}
 
-.doc-preview .control-tools {align-items: center;border-top: 1px solid #eee;color: #333;display: flex;justify-content: flex-end;padding: 5px 10px;}
+.doc-preview .control-tools {align-items: center;border-top: 1px solid #eee;color: #333;display: flex;justify-content: flex-end;padding: 5px 10px;
+  overflow: hidden;}
 
 .doc-preview .tools {display: flex}
 
