@@ -1,2 +1,2 @@
-import CodePreview from "./codePreview.vue"
+import CodePreview from "./vue.vue"
 export default CodePreview

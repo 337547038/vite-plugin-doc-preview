@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-doc-preview",
-  "version": "0.1.10",
-  "description": "基于Vite + Vue3的markdown文档代码预览插件",
+  "version": "0.2.0",
+  "description": "基于Vite插件机制实现对markdown文件内容进行转换。核心通过marked结合hightlight.js实现代码高亮和美化。并且可让文档中带有如preview指定标识的markdown代码块替换为组件，体验预览效果。支持Vue和React框架。",
   "license": "MIT",
   "author": "337547038",
   "keywords": [
@@ -9,6 +9,7 @@
     "doc",
     "preview",
     "vue3",
+    "react",
     "vite",
     "markdown"
   ],
@@ -44,7 +45,7 @@
       "require": "./dist/index.cjs"
     },
     "./style/*": "./style/*",
-    "./component": "./component/index.js"
+    "./component/*": "./component/*"
   },
   "scripts": {
     "build": "vite build",
@@ -55,6 +56,7 @@
     "marked": "^5.0.4"
   },
   "devDependencies": {
-    "@types/node": "^20.2.5"
+    "@types/node": "^20.2.5",
+    "esbuild": "*"
   }
 }
